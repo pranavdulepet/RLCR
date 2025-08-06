@@ -1,0 +1,233 @@
+{
+  "builder_name": "parquet",
+  "citation": "",
+  "config_name": "default",
+  "dataset_name": "gpqa-eval",
+  "dataset_size": 417104,
+  "description": "",
+  "download_checksums": {
+    "hf://datasets/mehuldamani/gpqa-eval@5a5f2a83ca71fb5ce0140ab4c0f991a3625c446a/data/test-00000-of-00001.parquet": {
+      "num_bytes": 254360,
+      "checksum": null
+    }
+  },
+  "download_size": 254360,
+  "features": {
+    "Correct Answer": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "Incorrect Answer 1": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "Incorrect Answer 2": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "Incorrect Answer 3": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "problem": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "answer": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "difficulty": {
+      "dtype": "int64",
+      "_type": "Value"
+    },
+    "id": {
+      "dtype": "int64",
+      "_type": "Value"
+    },
+    "Base-output_0": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "Base-evals": {
+      "feature": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "Base-c_lengths": {
+      "feature": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "Base-confidence_levels": {
+      "feature": {
+        "dtype": "float64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "Base-conf_format_adherence": {
+      "feature": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "RLVR-output_0": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "RLVR-evals": {
+      "feature": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "RLVR-c_lengths": {
+      "feature": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "RLVR-confidence_levels": {
+      "feature": {
+        "dtype": "float64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "RLVR-conf_format_adherence": {
+      "feature": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "RLVR-Classifier-output_0": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "RLVR-Classifier-class_output": {
+      "feature": {
+        "dtype": "float64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "RLVR-Classifier-evals": {
+      "feature": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "RLVR-Classifier-c_lengths": {
+      "feature": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "RLVR-Classifier-confidence_levels": {
+      "feature": {
+        "dtype": "float64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "RLVR-Classifier-conf_format_adherence": {
+      "feature": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "Answer-Prob-output_0": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "Answer-Prob-evals": {
+      "feature": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "Answer-Prob-c_lengths": {
+      "feature": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "Answer-Prob-confidence_levels": {
+      "feature": {
+        "dtype": "float64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "Answer-Prob-conf_format_adherence": {
+      "feature": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "RLCR-output_0": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "RLCR-evals": {
+      "feature": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "RLCR-c_lengths": {
+      "feature": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "RLCR-confidence_levels": {
+      "feature": {
+        "dtype": "float64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "RLCR-conf_format_adherence": {
+      "feature": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    }
+  },
+  "homepage": "",
+  "license": "",
+  "size_in_bytes": 671464,
+  "splits": {
+    "test": {
+      "name": "test",
+      "num_bytes": 417104,
+      "num_examples": 448,
+      "dataset_name": "gpqa-eval"
+    }
+  },
+  "version": {
+    "version_str": "0.0.0",
+    "major": 0,
+    "minor": 0,
+    "patch": 0
+  }
+}
