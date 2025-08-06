@@ -85,6 +85,8 @@ CUDA_VISIBLE_DEVICES=0 inference_example.py
 
 ### 📚 Available Models
 
+All models are available at this [RLCR HuggingFace Collection.](https://github.com/damanimehul/RLCR.git)
+
 | Name              | Training Dataset                                         | Model Path                                             | System Prompt   |
 |:------------------|:------------------------------|:--------------------------------------------------------------|:-------------|
 | RLCR-hotpot       | HotpotQA-Modified                          | mehuldamani/hotpot-v2-brier-7b-no-split |   TABC_Long     |
