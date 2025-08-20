@@ -53,7 +53,7 @@ All models and datasets are available at this [RLCR HuggingFace Collection.](htt
 
 To run RLCR on hotpot:
 ```bash
-CUDA_VISIBLE_DEVICES=0,1,2,3 accelerate launch --num_processes 4 --config_file deepspeed.yaml rl_runner.py --config configs/Qwen-7B/hotpot/RLVR.yaml
+CUDA_VISIBLE_DEVICES=0,1,2,3 accelerate launch --num_processes 4 --config_file deepspeed.yaml rl_runner.py --config configs/Qwen-7B/hotpot/RLCR.yaml
 ```
 
 ### 📝 Notes
