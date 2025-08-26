@@ -2,7 +2,7 @@
 #SBATCH --job-name=rlcr-hotpot
 #SBATCH --partition=brtx6
 #SBATCH --gpus=4
-#SBATCH --time=24:00:00
+#SBATCH --time=23:59:59
 #SBATCH --output=/srv/local1/%u/logs/rlcr-hotpot-%j.out
 #SBATCH --error=/srv/local1/%u/logs/rlcr-hotpot-%j.err
 #SBATCH --cpus-per-task=8

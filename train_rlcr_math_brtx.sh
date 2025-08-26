@@ -2,7 +2,7 @@
 #SBATCH --job-name=rlcr-math
 #SBATCH --partition=ba100
 #SBATCH --gpus=6
-#SBATCH --time=48:00:00
+#SBATCH --time=2-00:00:00
 #SBATCH --output=/srv/local1/%u/logs/rlcr-math-%j.out
 #SBATCH --error=/srv/local1/%u/logs/rlcr-math-%j.err
 #SBATCH --cpus-per-task=12
