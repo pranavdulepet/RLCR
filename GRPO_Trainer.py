@@ -366,7 +366,9 @@ class CustomTrainer(Trainer):
                     # Feed identical seed for tp groups to ensure sampling results are the same across workers
                     seed=self.accelerator.process_index // self.vllm_tensor_parallel_size,
                     enable_sleep_mode=True,
-                    dtype="half"
+                    dtype="half",
+                    quantization=None,
+                    load_format="auto"
                 )
             
             self._last_loaded_step = -1  # tag to avoid useless loading during grad accumulation

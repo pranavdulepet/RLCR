@@ -50,7 +50,7 @@ scale_rewards: false
 seed: 43
 sys_prompt_name: "tabc_long"
 temperature: 0.7
-use_vllm: false
+use_vllm: true
 vllm_device: auto
 vllm_gpu_memory_utilization: 0.3
 warmup_ratio: 0.05
