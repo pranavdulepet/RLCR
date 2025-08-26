@@ -52,5 +52,6 @@ sys_prompt_name: "tabc_long"
 temperature: 0.7
 use_vllm: true
 vllm_device: auto
+vllm_dtype: half
 vllm_gpu_memory_utilization: 0.3
 warmup_ratio: 0.05
