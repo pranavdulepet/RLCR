@@ -1,8 +1,8 @@
-# RLCR HotpotQA Config for BRTX (4×Quadro RTX 6000)
+# RLCR HotpotQA Test Config for BRTX (4×Quadro RTX 6000) - 10% Data
 # Model arguments
 model_name_or_path: Qwen/Qwen2.5-7B
-run_name: "RLCR-hotpot-brtx"
-output_dir: /srv/local1/RLCR-hotpot-outputs
+run_name: "RLCR-hotpot-test-brtx"
+output_dir: /srv/local1/pdulepe1/outputs/RLCR-hotpot-test
 model_revision: main
 torch_dtype: float16
 attn_implementation: flash_attention_2
@@ -34,7 +34,7 @@ max_completion_length: 1024
 max_steps: -1
 num_generations: 16
 num_iterations: 1
-num_train_epochs: 1
+num_train_epochs: 0.1
 overwrite_output_dir: true
 per_device_eval_batch_size: 16
 per_device_train_batch_size: 4
