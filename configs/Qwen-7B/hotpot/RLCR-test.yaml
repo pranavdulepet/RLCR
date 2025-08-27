@@ -1,0 +1,55 @@
+# Model arguments - Fast test configuration
+model_name_or_path: Qwen/Qwen2.5-7B
+run_name: "RLCR-hotpot-test"
+output_dir: data/RLCR-hotpot-test
+model_revision: main
+torch_dtype: bfloat16
+attn_implementation: flash_attention_2
+
+# Data training arguments
+dataset_name: mehuldamani/hotpot_qa
+# Num processes is less by 1 as vLLM is using 1 GPU
+num_processes: 1
+
+# GRPO trainer config - FAST TEST VERSION
+bf16: true
+beta: 0.0
+eval_strategy: "steps"
+eval_steps: 5          # More frequent eval for monitoring
+eval_on_start: false 
+format_pattern: "tabc"
+gradient_accumulation_steps: 4   # Much smaller - faster iterations
+gradient_checkpointing: true
+gradient_checkpointing_kwargs:
+  use_reentrant: false
+hub_strategy: "end"
+learning_rate: 1e-06
+log_level: info
+logging_steps: 1       # More frequent logging
+logging_strategy: steps
+lr_scheduler_type: constant_with_warmup
+max_prompt_length: 1024    # Shorter sequences = faster
+max_completion_length: 512 # Shorter sequences = faster
+max_steps: 20          # Very few steps for quick test
+num_generations: 8     # Fewer generations = faster
+num_iterations: 1
+num_train_epochs: 1
+overwrite_output_dir: true
+per_device_eval_batch_size: 4    # Smaller batches = faster
+per_device_train_batch_size: 2   # Smaller batches = faster
+push_to_hub: false     # Don't push test runs
+report_to:
+- wandb
+reward_funcs: ["format","accuracy","brier","mean_confidence","confidence_one_or_zero"]
+reward_weights: [0.5,0.5,0.5,0.000001,0.000001]
+save_strategy: "steps"
+save_steps: 10         # Save more frequently for monitoring
+save_total_limit: 2    # Keep more checkpoints for debugging
+scale_rewards: false
+seed: 43
+sys_prompt_name: "tabc_long"
+temperature: 0.7
+use_vllm: true
+vllm_device: auto
+vllm_gpu_memory_utilization: 0.4
+warmup_ratio: 0.05
