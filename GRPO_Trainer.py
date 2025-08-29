@@ -348,32 +348,33 @@ class CustomTrainer(Trainer):
 
         set_seed(args.seed, device_specific=True)
 
-        if not is_vllm_available():
+        if args.use_vllm:
+            if not is_vllm_available():
                 raise ImportError(
                     "vLLM is not available and `use_vllm` is set to True. Please install vLLM with "
                     "`pip install vllm` to use it."
                 )
 
-        if self.vllm_mode == "colocate":
-            self.llm = LLM(
-                    model=model.name_or_path,
-                    tensor_parallel_size=args.vllm_tensor_parallel_size,
-                    gpu_memory_utilization=self.vllm_gpu_memory_utilization,
-                    max_num_seqs=self.args.per_device_train_batch_size
-                    * self.args.gradient_accumulation_steps,
-                    max_model_len=self.max_prompt_length + self.max_completion_length,
-                    distributed_executor_backend="external_launcher",
-                    # Feed identical seed for tp groups to ensure sampling results are the same across workers
-                    seed=self.accelerator.process_index // self.vllm_tensor_parallel_size,
-                    enable_sleep_mode=True
-                )
-            
-            self._last_loaded_step = -1  # tag to avoid useless loading during grad accumulation
-            self.model_name_or_path = model.name_or_path
-            # When using vLLM, the main process is responsible for loading the model weights. This can cause process
-            # desynchronization and seems to lead to DeepSpeed hanging during initialization. To prevent this, we
-            # synchronize all processes after vLLM has been fully initialized.
-            self.accelerator.wait_for_everyone()
+            if self.vllm_mode == "colocate":
+                self.llm = LLM(
+                        model=model.name_or_path,
+                        tensor_parallel_size=args.vllm_tensor_parallel_size,
+                        gpu_memory_utilization=self.vllm_gpu_memory_utilization,
+                        max_num_seqs=self.args.per_device_train_batch_size
+                        * self.args.gradient_accumulation_steps,
+                        max_model_len=self.max_prompt_length + self.max_completion_length,
+                        distributed_executor_backend="external_launcher",
+                        # Feed identical seed for tp groups to ensure sampling results are the same across workers
+                        seed=self.accelerator.process_index // self.vllm_tensor_parallel_size,
+                        enable_sleep_mode=True
+                    )
+                
+                self._last_loaded_step = -1  # tag to avoid useless loading during grad accumulation
+                self.model_name_or_path = model.name_or_path
+                # When using vLLM, the main process is responsible for loading the model weights. This can cause process
+                # desynchronization and seems to lead to DeepSpeed hanging during initialization. To prevent this, we
+                # synchronize all processes after vLLM has been fully initialized.
+                self.accelerator.wait_for_everyone()
 
         self.model_accepts_loss_kwargs = False
 
