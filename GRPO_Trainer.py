@@ -347,6 +347,9 @@ class CustomTrainer(Trainer):
         }
 
         set_seed(args.seed, device_specific=True)
+        
+        # Initialize _last_loaded_step regardless of vLLM usage
+        self._last_loaded_step = -1
 
         if args.use_vllm:
             if not is_vllm_available():
@@ -566,28 +569,49 @@ class CustomTrainer(Trainer):
 
         torch.cuda.empty_cache()
 
-        # First, have main process load weights if needed
-        if self.state.global_step != self._last_loaded_step:
-            if self.state.global_step>=-1:
-                self.llm.wake_up()
-                self.vllm_sleeping = False 
-            self._move_model_to_vllm()
-            self._last_loaded_step = self.state.global_step
+        if hasattr(self, 'llm'):  # vLLM path
+            # First, have main process load weights if needed
+            if self.state.global_step != self._last_loaded_step:
+                if self.state.global_step>=-1:
+                    self.llm.wake_up()
+                    self.vllm_sleeping = False 
+                self._move_model_to_vllm()
+                self._last_loaded_step = self.state.global_step
 
-        sampling_params = SamplingParams(
-                    n=1,  # vLLM on each GPU generates only 1 in colocate mode
-                    temperature=self.temperature,
-                    max_tokens=self.max_completion_length)
-        
-        with profiling_context(self, "vLLM.generate"):
-            all_outputs = self.llm.generate(prompts_text, sampling_params=sampling_params, use_tqdm=False)
-           # put to sleep
-            if mode == "train":
-                self.llm.sleep(level=1)
-                self.vllm_sleeping = True 
-                self.accelerator.wait_for_everyone()
+            sampling_params = SamplingParams(
+                        n=1,  # vLLM on each GPU generates only 1 in colocate mode
+                        temperature=self.temperature,
+                        max_tokens=self.max_completion_length)
+            
+            with profiling_context(self, "vLLM.generate"):
+                all_outputs = self.llm.generate(prompts_text, sampling_params=sampling_params, use_tqdm=False)
+               # put to sleep
+                if mode == "train":
+                    self.llm.sleep(level=1)
+                    self.vllm_sleeping = True 
+                    self.accelerator.wait_for_everyone()
 
-        completion_ids = [output.token_ids for outputs in all_outputs for output in outputs.outputs]
+            completion_ids = [output.token_ids for outputs in all_outputs for output in outputs.outputs]
+        else:  # Fallback to standard transformers generation
+            with profiling_context(self, "transformers.generate"):
+                # Use the model directly for generation
+                generation_kwargs = {
+                    "max_new_tokens": self.max_completion_length,
+                    "temperature": self.temperature,
+                    "do_sample": True,
+                    "pad_token_id": self.processing_class.pad_token_id,
+                }
+                
+                with torch.no_grad():
+                    generated_ids = self.model.generate(
+                        input_ids=prompt_ids,
+                        attention_mask=prompt_mask,
+                        **generation_kwargs
+                    )
+                
+                # Extract only the completion part (remove prompt)
+                completion_ids = generated_ids[:, prompt_ids.shape[1]:]
+                completion_ids = [completion_ids[i] for i in range(completion_ids.shape[0])]
         # Pad the completions, and concatenate them with the prompts
         completion_ids = [torch.tensor(ids, device=device) for ids in completion_ids]
         completion_ids = pad(completion_ids, padding_value=self.processing_class.pad_token_id)
