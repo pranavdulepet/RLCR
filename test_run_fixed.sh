@@ -36,9 +36,9 @@ CUDA_VISIBLE_DEVICES=0,1 accelerate launch --num_processes 2 --config_file deeps
   --run_name "RLCR-hotpot-test" \
   --output_dir data/RLCR-hotpot-test \
   --model_revision main \
-  --torch_dtype bfloat16 \
+  --torch_dtype float16 \
   --attn_implementation flash_attention_2 \
-  --bf16 true \
+  --fp16 true \
   --beta 0.0 \
   --eval_strategy steps \
   --eval_steps 5 \
