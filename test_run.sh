@@ -21,8 +21,8 @@ echo "GPUs: $CUDA_VISIBLE_DEVICES"
 nvidia-smi
 echo "==================="
 
-# Navigate to RLCR directory
-cd /Users/macbookair/jhu/research/llm-confidence-proj/rlcr-brtx/RLCR
+# Navigate to RLCR directory  
+cd ~/RLCR
 
 # Activate conda environment
 source ~/.bashrc
