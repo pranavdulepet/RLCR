@@ -71,9 +71,7 @@ CUDA_VISIBLE_DEVICES=0,1 accelerate launch --num_processes 2 --config_file deeps
   --seed 43 \
   --sys_prompt_name tabc_long \
   --temperature 0.7 \
-  --use_vllm true \
-  --vllm_device auto \
-  --vllm_gpu_memory_utilization 0.4 \
+  --use_vllm false \
   --warmup_ratio 0.05
 
 echo "Test training completed!"
