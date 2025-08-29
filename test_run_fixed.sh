@@ -54,7 +54,7 @@ CUDA_VISIBLE_DEVICES=0,1 accelerate launch --num_processes 2 --config_file deeps
   --max_prompt_length 1024 \
   --max_completion_length 512 \
   --max_steps 20 \
-  --num_generations 8 \
+  --num_generations 4 \
   --num_iterations 1 \
   --num_train_epochs 1 \
   --overwrite_output_dir true \
