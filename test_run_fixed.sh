@@ -22,7 +22,7 @@ nvidia-smi
 echo "==================="
 
 # Navigate to RLCR directory  
-cd /srv/local2/pdulepe1/RLCR
+cd /brtx/601-nvme1/pdulepe1/rlcr-reproduce/RLCR
 
 # Activate conda environment
 source ~/.bashrc
@@ -38,7 +38,6 @@ CUDA_VISIBLE_DEVICES=0,1 accelerate launch --num_processes 2 --config_file deeps
   --model_revision main \
   --torch_dtype bfloat16 \
   --attn_implementation flash_attention_2 \
-  --num_processes 1 \
   --bf16 true \
   --beta 0.0 \
   --eval_strategy steps \
