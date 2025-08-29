@@ -44,7 +44,7 @@ CUDA_VISIBLE_DEVICES=0,1 accelerate launch --num_processes 2 --config_file deeps
   --eval_steps 5 \
   --eval_on_start false \
   --format_pattern tabc \
-  --gradient_accumulation_steps 4 \
+  --gradient_accumulation_steps 8 \
   --gradient_checkpointing true \
   --learning_rate 1e-06 \
   --log_level info \
@@ -58,8 +58,8 @@ CUDA_VISIBLE_DEVICES=0,1 accelerate launch --num_processes 2 --config_file deeps
   --num_iterations 1 \
   --num_train_epochs 1 \
   --overwrite_output_dir true \
-  --per_device_eval_batch_size 4 \
-  --per_device_train_batch_size 2 \
+  --per_device_eval_batch_size 2 \
+  --per_device_train_batch_size 1 \
   --push_to_hub false \
   --report_to wandb \
   --reward_funcs format accuracy brier mean_confidence confidence_one_or_zero \
