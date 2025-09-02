@@ -1,0 +1,79 @@
+# RLCR Configuration for Single RTX GPU Training
+# Optimized for BRTX brtx6 partition (RTX 6000 24GB)
+
+# Model arguments
+model_name_or_path: Qwen/Qwen2.5-7B
+run_name: "RLCR-hotpot-single-rtx"
+output_dir: data/RLCR-hotpot-single-rtx
+model_revision: main
+torch_dtype: bfloat16
+attn_implementation: sdpa          # Use PyTorch SDPA instead of flash_attention_2
+
+# Data training arguments
+dataset_name: mehuldamani/hotpot_qa
+num_processes: 1                   # Single GPU
+
+# GRPO trainer config - Optimized for RTX 6000 (24GB)
+bf16: true
+beta: 0.0
+eval_strategy: "steps"
+eval_steps: 100
+eval_on_start: false 
+format_pattern: "tabc"
+
+# Aggressive memory optimization for 24GB RTX 6000
+gradient_accumulation_steps: 64    # Higher accumulation, smaller per-step memory
+gradient_checkpointing: true
+gradient_checkpointing_kwargs:
+  use_reentrant: false
+per_device_train_batch_size: 1     # Minimal batch size
+per_device_eval_batch_size: 8      # Reduced further
+
+# Training schedule
+hub_strategy: "end"
+learning_rate: 1e-06
+log_level: info
+logging_steps: 10
+logging_strategy: steps
+lr_scheduler_type: constant_with_warmup
+max_prompt_length: 1024            # Further reduced for 24GB
+max_completion_length: 512         # Further reduced for 24GB
+
+# Training duration
+max_steps: 1000
+num_iterations: 1
+num_train_epochs: -1
+overwrite_output_dir: true
+
+# Generation parameters - Must divide evenly into batch sizes  
+num_generations: 8                 # Divides into train batch (64÷8=8) and eval batch (8÷8=1)
+temperature: 0.7
+
+# Model saving
+save_strategy: "steps"
+save_steps: 200
+save_total_limit: 3
+push_to_hub: false
+
+# Logging
+report_to:
+- wandb
+
+# Rewards
+reward_funcs: ["format","accuracy","brier","mean_confidence","confidence_one_or_zero"]
+reward_weights: [0.5,0.5,0.5,0.000001,0.000001]
+scale_rewards: false
+
+# System settings
+seed: 43
+sys_prompt_name: "tabc_long"
+use_vllm: true
+vllm_device: auto
+vllm_gpu_memory_utilization: 0.2   # Very conservative for 24GB
+warmup_ratio: 0.05
+
+# Performance optimizations
+dataloader_num_workers: 4
+dataloader_pin_memory: true
+remove_unused_columns: false
+eval_accumulation_steps: 4

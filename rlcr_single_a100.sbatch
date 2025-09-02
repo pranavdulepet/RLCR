@@ -1,13 +1,12 @@
 #!/bin/bash
-#SBATCH --job-name=rlcr-single-a100
-#SBATCH --partition=ba100          # A100 partition
-#SBATCH --nodelist=brtx602 
-#SBATCH --gpus=1                   # Single A100 GPU
+#SBATCH --job-name=rlcr-single-rtx
+#SBATCH --partition=brtx6          # RTX partition (brtx604-606)
+#SBATCH --gpus=1                   # Single RTX GPU
 #SBATCH --time=20:00:00           # 20 hours (conservative estimate)
 #SBATCH --cpus-per-task=8         # CPU cores for data loading/processing
 #SBATCH --mem=32G                 # System RAM
-#SBATCH --output=logs/rlcr_a100_%j.out
-#SBATCH --error=logs/rlcr_a100_%j.err
+#SBATCH --output=logs/rlcr_rtx_%j.out
+#SBATCH --error=logs/rlcr_rtx_%j.err
 #SBATCH --mail-type=BEGIN,END,FAIL # Email notifications (optional)
 #SBATCH --mail-user=pdulepe1@jh.edu # Replace with your email
 
@@ -62,7 +61,7 @@ pip list | grep -E "(torch|transformers|accelerate|deepspeed)"
 echo "=========================="
 
 # Check if required config exists
-CONFIG_FILE="configs/Qwen-7B/hotpot/RLCR-single-a100.yaml"
+CONFIG_FILE="configs/Qwen-7B/hotpot/RLCR-single-rtx.yaml"
 if [ ! -f "$CONFIG_FILE" ]; then
     echo "ERROR: Config file $CONFIG_FILE not found!"
     echo "Please create the config file before running this job."
