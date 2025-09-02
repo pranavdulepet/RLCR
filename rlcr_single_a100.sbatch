@@ -48,10 +48,10 @@ cd /brtx/601-nvme1/pdulepe1/rlcr-reproduce/RLCR  # Replace USERNAME with your ac
 # module load cuda/11.8
 # module load python/3.9
 
-# Activate conda environment
-echo "Activating conda environment..."
-source ~/.bashrc
-conda activate rl
+# # Activate conda environment
+# echo "Activating conda environment..."
+# source ~/.bashrc
+# conda activate rl
 
 # Verify environment
 echo "=== Environment Check ==="
