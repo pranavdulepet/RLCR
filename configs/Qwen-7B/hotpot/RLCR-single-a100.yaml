@@ -29,7 +29,7 @@ gradient_checkpointing: true       # Essential for memory efficiency
 gradient_checkpointing_kwargs:
   use_reentrant: false
 per_device_train_batch_size: 4     # Conservative for single A100 with vLLM
-per_device_eval_batch_size: 8      # Slightly larger for eval
+per_device_eval_batch_size: 32     # Must be divisible by num_generations (32)
 
 # Training schedule - Subset training for feasibility
 hub_strategy: "end"
@@ -47,8 +47,8 @@ num_iterations: 1
 num_train_epochs: -1              # Use max_steps instead
 overwrite_output_dir: true
 
-# Generation parameters
-num_generations: 32               # Must divide evenly into effective batch size (128)
+# Generation parameters  
+num_generations: 32               # Must divide both train batch (128÷32=4) and eval batch (32÷32=1)
 temperature: 0.7
 
 # Model saving and checkpointing
