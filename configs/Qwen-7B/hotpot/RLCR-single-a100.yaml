@@ -1,0 +1,81 @@
+# RLCR Configuration for Single A100 GPU Training
+# Optimized for BRTX ba100 partition (brtx602)
+# Based on original RLCR config but adapted for single GPU constraints
+
+# Model arguments
+model_name_or_path: Qwen/Qwen2.5-7B
+run_name: "RLCR-hotpot-single-a100"
+output_dir: data/RLCR-hotpot-single-a100
+model_revision: main
+torch_dtype: bfloat16
+attn_implementation: flash_attention_2
+
+# Data training arguments
+dataset_name: mehuldamani/hotpot_qa
+# Single GPU setup - vLLM runs on same GPU as training
+num_processes: 1
+
+# GRPO trainer config - Optimized for single A100
+bf16: true
+beta: 0.0
+eval_strategy: "steps"
+eval_steps: 100                    # Less frequent eval to save time
+eval_on_start: false 
+format_pattern: "tabc"
+
+# Memory and batch size optimization for single GPU
+gradient_accumulation_steps: 32    # Increased to maintain effective batch size
+gradient_checkpointing: true       # Essential for memory efficiency
+gradient_checkpointing_kwargs:
+  use_reentrant: false
+per_device_train_batch_size: 4     # Conservative for single A100 with vLLM
+per_device_eval_batch_size: 8      # Slightly larger for eval
+
+# Training schedule - Subset training for feasibility
+hub_strategy: "end"
+learning_rate: 1e-06
+log_level: info
+logging_steps: 10                  # More frequent logging for monitoring
+logging_strategy: steps
+lr_scheduler_type: constant_with_warmup
+max_prompt_length: 2048           # Reduced from 3072 for memory
+max_completion_length: 1024       # Reduced from 1536 for memory
+
+# Training duration - Subset of full dataset
+max_steps: 1000                   # Subset training (~1/4 of typical full run)
+num_iterations: 1
+num_train_epochs: -1              # Use max_steps instead
+overwrite_output_dir: true
+
+# Generation parameters
+num_generations: 24               # Reduced from 32 for speed
+temperature: 0.7
+
+# Model saving and checkpointing
+save_strategy: "steps"
+save_steps: 200                   # Save every 200 steps for monitoring
+save_total_limit: 3               # Keep 3 checkpoints for safety
+push_to_hub: false                # Don't push test runs
+
+# Logging and monitoring
+report_to:
+- wandb
+
+# Reward configuration (same as original)
+reward_funcs: ["format","accuracy","brier","mean_confidence","confidence_one_or_zero"]
+reward_weights: [0.5,0.5,0.5,0.000001,0.000001]
+scale_rewards: false
+
+# System and performance settings
+seed: 43
+sys_prompt_name: "tabc_long"
+use_vllm: true
+vllm_device: auto
+vllm_gpu_memory_utilization: 0.3  # Conservative to leave room for training
+warmup_ratio: 0.05
+
+# Additional optimizations for single GPU
+dataloader_num_workers: 4         # Parallel data loading
+dataloader_pin_memory: true       # Faster GPU transfer
+remove_unused_columns: false      # Keep all columns for debugging
+eval_accumulation_steps: 4        # Reduce eval memory usage
