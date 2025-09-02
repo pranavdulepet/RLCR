@@ -48,7 +48,7 @@ num_train_epochs: -1              # Use max_steps instead
 overwrite_output_dir: true
 
 # Generation parameters
-num_generations: 24               # Reduced from 32 for speed
+num_generations: 32               # Must divide evenly into effective batch size (128)
 temperature: 0.7
 
 # Model saving and checkpointing
