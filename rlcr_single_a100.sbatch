@@ -1,6 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=rlcr-single-a100
 #SBATCH --partition=ba100          # A100 partition
+#SBATCH --nodelist=brtx602 
 #SBATCH --gpus=1                   # Single A100 GPU
 #SBATCH --time=20:00:00           # 20 hours (conservative estimate)
 #SBATCH --cpus-per-task=8         # CPU cores for data loading/processing
