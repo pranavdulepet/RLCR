@@ -1,14 +1,12 @@
 #!/bin/bash
 #SBATCH --job-name=rlcr-single-rtx
-#SBATCH --partition=brtx6          # RTX partition (brtx604-606)
-#SBATCH --gpus=1                   # Single RTX GPU
-#SBATCH --time=20:00:00           # 20 hours (conservative estimate)
-#SBATCH --cpus-per-task=8         # CPU cores for data loading/processing
-#SBATCH --mem=32G                 # System RAM
+#SBATCH --partition=brtx6          
+#SBATCH --gpus=1                   
+#SBATCH --time=20:00:00           
+#SBATCH --cpus-per-task=8         
+#SBATCH --mem=32G                 
 #SBATCH --output=logs/rlcr_rtx_%j.out
 #SBATCH --error=logs/rlcr_rtx_%j.err
-#SBATCH --mail-type=BEGIN,END,FAIL # Email notifications (optional)
-#SBATCH --mail-user=pdulepe1@jh.edu # Replace with your email
 
 # Exit on any error
 set -e
@@ -41,17 +39,8 @@ nvidia-smi
 echo "=========================="
 
 # Navigate to RLCR directory
-cd /brtx/601-nvme1/pdulepe1/rlcr-reproduce/RLCR  # Replace USERNAME with your actual username
+cd /brtx/601-nvme1/pdulepe1/rlcr-reproduce/RLCR 
 # Alternative if using home dir: cd ~/RLCR
-
-# Load modules if needed (uncomment if your system uses modules)
-# module load cuda/11.8
-# module load python/3.9
-
-# # Activate conda environment
-# echo "Activating conda environment..."
-# source ~/.bashrc
-# conda activate rl
 
 # Verify environment
 echo "=== Environment Check ==="
@@ -63,7 +52,7 @@ echo "=========================="
 # Check if required config exists
 CONFIG_FILE="configs/Qwen-7B/hotpot/RLCR-single-rtx.yaml"
 if [ ! -f "$CONFIG_FILE" ]; then
-    echo "ERROR: Config file $CONFIG_FILE not found!"
+    echo "ERROR: Config file $CONFIG_FILE not found"
     echo "Please create the config file before running this job."
     exit 1
 fi
@@ -85,9 +74,6 @@ if accelerate launch \
     echo "=== Training Completed Successfully ==="
     echo "End time: $(date)"
     echo "Job Duration: $SECONDS seconds"
-    
-    # Optional: Copy important outputs to persistent storage
-    # rsync -av data/RLCR-single-a100/ /scratch/USERNAME/RLCR-outputs/
     
 else
     echo "=== Training Failed ==="

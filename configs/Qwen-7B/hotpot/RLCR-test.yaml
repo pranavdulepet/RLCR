@@ -11,7 +11,7 @@ dataset_name: mehuldamani/hotpot_qa
 # Num processes is less by 1 as vLLM is using 1 GPU
 num_processes: 1
 
-# GRPO trainer config - FAST TEST VERSION
+# GRPO trainer config
 bf16: true
 beta: 0.0
 eval_strategy: "steps"
